@@ -1,0 +1,72 @@
+summary: How to Write a Codelab
+id: Data-Deployment-Pipeline
+categories: Sample
+tags: medium
+status: Published 
+authors: anhdao
+
+
+# Data Model Deployment Pipeline
+
+
+<!-- ------------------------ -->
+## Overview
+Duration: 5
+
+### Steps by steps process for model deployment 
+
+
+<!-- ------------------------ -->
+## Step 1 - Prototyping
+Duration: 5
+
+### - First we'll do our prototyping, this could be your Jupyter Notebook. We're going to say 
+
+### - Model = Lord(parameters). So now we hav a model
+
+### - We'll pass in X -> to our Model -> and generate a Y
+
+### - Have 2 goals in mind when do this
+
+### - Functional Interface
+Which to say if I'm pass in X in a particular format will I get Y in consistent format. 
+
+### - How good are your predictions
+You'll check it out, test it with real world data. You're going to evaluate how good is your prediction
+
+
+![alt-text-here](assets/jupyter.png)
+
+
+<!-- ------------------------ -->
+## Step 2 - Deployment/Inference Pipeline
+Duration:5
+
+### How is this model accessed?
+
+#### - For e.g.) We can build a FastAPI layer over the model and expose it to the world as a RestAPI. 
+
+#### - Client on a web browser can contact the Rest API, and based on the input signature, URL parameters, it records in here, go to the model to get the output, then generate it back.
+
+#### - This is on the fly, meaning I'm passing in the input, and getting back the output in a synchronous call.
+
+#### - Parallelize by using multiple workers because we're writing our inferences in batch, not just on the fly
+
+
+![alt-text-here](assets/FastAPI.png)
+
+![alt-text-here](assets/restapi.webp)
+
+![alt-text-here](assets/restapi2.jpeg)
+
+
+<!-- ------------------------ -->
+## Conclusion
+Duration: 5
+
+### We're basically incorporate a wrapper tool to the model and provide access to all over the world so that they can go in and read it.
+
+
+![alt-text-here](assets/restapi3.jpeg)
+
+

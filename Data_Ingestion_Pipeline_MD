@@ -1,0 +1,94 @@
+summary: How to Write a Codelab
+id: Data-Ingestion-Pipeline
+categories: Sample
+tags: medium
+status: Published 
+authors: anhdao
+
+
+# Data Ingestion Pipeline
+
+
+<!-- ------------------------ -->
+## Overview
+Duration: 5
+
+### Steps by steps process I performed to make Nowcast dataset
+
+- Download/extract SEVIR_VIL_STORMEVENTS_2017 to 2019 from Amazon S3 to my local machine
+- Create Google storage bucket and move all 2 years worth of SEVIR_VIL_STORMEVENTS files from 2017-2019 into the bucket
+- Run NowcastGenerator script to loads full VIL sequences, and splits each event into 3 training samples, each 12 frames long.
+- Run make_nowcast_dataset script to make training and test dataset for nowcasting model using SEVIR
+- Organized and combined everything into an apache beam pipeline in a python script that will be run every six months and the output nowcast testing and training h5 files will be written to Google Storage Bucket
+
+
+
+<!-- ------------------------ -->
+## Full pipeline
+Duration: 5
+
+![alt-text-here](assets/FullPipeline2.png)
+
+
+<!-- ------------------------ -->
+## Read Data from H5 files with H5PY Modules
+Duration: 5
+
+Opening 4 SEVIL_STORMEVENTS_2017 to 2019 h5 files files for reading that also remove duplicates files. 
+
+There are 2 main steps
+
+ **If there are duplicates files, it will update the variable hdf_filenames with unique filename values**
+
+![alt-text-here](assets/Unique.png)
+
+ **Then VERBOSE flag in the is there to allow writing of regular expressions**
+
+![alt-text-here](assets/Opening.png)
+
+
+
+
+<!-- ------------------------ -->
+## Generator for nowcast dataset
+Duration: 5
+
+I generated a nowcast generator that loads full VIL sequences, and splits each event into 3 training samples each 12 frames long.
+
+Event Frames:
+
+![alt-text-here](assets/Frames.png)
+
+**This get the item/index for an event, and return new X and Y sequences that is split into 3 training samples, x1 y1, x2 y2, and x3 y3 with each sample have 12 frames long. For e.g) input x have 13 images, then output y will get the next 12 images and so on.**
+
+![alt-text-here](assets/Sequences.png)
+
+
+**This is the 2 generators that loads full VIL sequences that filter out and remove samples with missing radar data. We can specify the number of batches size to load into memory, the start date, and end date of these events.** 
+
+
+![alt-text-here](assets/Generator.png)
+
+
+
+<!-- ------------------------ -->
+## Perform read_write_chunks and main function in make_nowcast_dataset.py to create training and testing dataset for nowcasting model using SEVIR
+
+
+**Uses the read_write_chunks function to write a new h5 file that get the first chunk and load it into 2 newly created dataset/array, 1 for x (input), and 1 for y (output), that are split into 3 samples so that they can fit the 3 training samples**
+
+It then gather other chunks. And it will break once it gathered all the chunks. 
+
+
+![alt-text-here](assets/read_write_chunks.png)
+
+
+**Uses main function to execute the previously defined generator, 1 for nowcast train data, and the other generator for nowcast test data using the catalog and SEVIR_VIL_STORMEVENTS as input parameters. Logger info will emit messages at info logging level notifying that it's writing the training + testing h5 data to a your specified output location. It also execute the read_write_chunks function twice, 1 for nowcast train and the other for nowcast test data.**
+
+
+![alt-text-here](assets/main.png)
+
+
+
+
+

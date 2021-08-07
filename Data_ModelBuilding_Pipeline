@@ -1,0 +1,63 @@
+summary: How to Write a Codelab
+id: Data-ModelBuilding-Pipeline
+categories: Sample
+tags: medium
+status: Published 
+authors: anhdao
+
+
+# Data Model Building Pipeline
+
+
+<!-- ------------------------ -->
+## Overview
+Duration: 5
+
+### Steps by steps process for model building 
+
+
+<!-- ------------------------ -->
+## Step 1
+Duration: 5
+
+### Download/extract SEVIR_VIL_NOWCAST_TRANING.H5 and SEVIR_VIL_NOWCAST_TESTING.H5 from Google Storage Bucket
+
+![alt-text-here](assets/storage.png)
+
+
+<!-- ------------------------ -->
+## Step 2
+Duration:5
+
+### Once acquired the training data, the ML team will build some kind of a model. The model will take imgx13, and it will generate imgx12. They'll train the model using that particular dataset as a training dataset.
+
+
+![alt-text-here](assets/12images.png)
+
+
+<!-- ------------------------ -->
+## Step 3
+Duration: 5
+
+### Once model is built, if I test it, how will my model perform. Compare (y,y^) to see some kind of specification of error to see if model is good enough for deployment. If not, tune it.
+
+
+![alt-text-here](assets/Models.png)
+
+
+
+<!-- ------------------------ -->
+## Final Step
+Duration: 5
+
+### Once decision has been made, we will now have model parameters, so we'll basically have a trained model
+
+### This process requires GPUs, huge infrastructure because you'll be training large amount of data with high level of complexity that will require a long amount of time
+
+
+### Once everything works, export it into these 4 models files: MSE, Style, MSE-Style, GAN
+
+
+![alt-text-here](assets/ModelFiles.png)
+
+
